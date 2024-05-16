@@ -14,7 +14,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Exponer el puerto que utiliza Flask
-EXPOSE 5000
+EXPOSE 3333
 
 # Comando para correr la aplicación
 CMD ["python", "./codebreaker.py"]

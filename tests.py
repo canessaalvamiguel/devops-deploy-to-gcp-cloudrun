@@ -1,8 +1,7 @@
 import unittest
-from flask_testing import TestCase
 from codebreaker import app  # Asegúrate de importar tu app de Flask correctamente
 
-class TestCodebreakerAPI(TestCase):
+class TestCodebreakerAPI(unittest.TestCase):
     def create_app(self):
         app.config['TESTING'] = True
         return app
