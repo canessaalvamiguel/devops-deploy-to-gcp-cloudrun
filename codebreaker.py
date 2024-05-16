@@ -13,8 +13,11 @@ def generate_secret_code():
 
 @app.route('/')
 def index():
-    
     return jsonify({"Hello": "World"})
+
+@app.route('/code')
+def code():
+    return jsonify({"code": secret_code})
 
 @app.route('/guess', methods=['POST'])
 def guess():
