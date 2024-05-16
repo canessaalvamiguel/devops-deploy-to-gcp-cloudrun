@@ -19,7 +19,20 @@ def index():
 def code():
     return jsonify({"code": secret_code})
 
-@app.route('/guess', methods=['POST'])
+@app.route('/code', methods=['POST'])
+def set_code():
+    global secret_code
+    if not request.json or not 'new_code' in request.json:
+        return jsonify({'error': 'Bad request, missing new_code'}), 400
+
+    new_code = request.json['new_code']
+    if len(new_code) != 4 or not new_code.isdigit():
+        return jsonify({'error': 'New code must be four digits'}), 400
+    
+    secret_code = new_code
+    return jsonify({'message': 'Secret code updated successfully'}), 200
+
+@app.route('/code/guess', methods=['POST'])
 def guess():
     if not request.json or not 'guess' in request.json:
         return jsonify({'error': 'Bad request'}), 400
@@ -35,19 +48,6 @@ def guess():
     }
     
     return jsonify(response)
-
-@app.route('/set_code', methods=['POST'])
-def set_code():
-    global secret_code
-    if not request.json or not 'new_code' in request.json:
-        return jsonify({'error': 'Bad request, missing new_code'}), 400
-
-    new_code = request.json['new_code']
-    if len(new_code) != 4 or not new_code.isdigit():
-        return jsonify({'error': 'New code must be four digits'}), 400
-    
-    secret_code = new_code
-    return jsonify({'message': 'Secret code updated successfully'}), 200
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=3333)
