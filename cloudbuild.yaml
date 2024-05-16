@@ -1,0 +1,33 @@
+steps:
+
+  # Paso 1: Construir la imagen de Docker
+  - name: "gcr.io/cloud-builders/docker"
+    id: Build Image
+    args: ["build", "-t", "gcr.io/$PROJECT_ID/codebreaker", "."]
+  
+  - name: "gcr.io/cloud-builders/docker"
+    entrypoint: "bash"
+    args: ["-c", "docker run gcr.io/$PROJECT_ID/codebreaker python -m unittest tests.py"]
+
+  # Paso 2: Empujar la imagen a Google Container Registry
+  - name: "gcr.io/cloud-builders/docker"
+    id: Push Image
+    args: ["push", "gcr.io/$PROJECT_ID/codebreaker"]
+
+  # Paso 3: Desplegar la imagen a Cloud Run
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    id: Deploy
+    entrypoint: "gcloud"
+    args:
+      - "run"
+      - "deploy"
+      - "codebreaker"
+      - "--port=5000"
+      - "--image"
+      - "gcr.io/$PROJECT_ID/codebreaker"
+      - "--region"
+      - "us-east4"
+      - "--allow-unauthenticated"
+
+images:
+  - "gcr.io/$PROJECT_ID/codebreaker"
