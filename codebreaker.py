@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 # Variable global para almacenar el código secreto
 secret_code = ''.join([str(random.randint(0, 9)) for _ in range(4)])
-print("Código secreto inicial:", secret_code)  # Esto es solo para propósitos de prueba
+print("Código secreto inicial", secret_code)  # Esto es solo para propósitos de prueba
 
 def generate_secret_code():
     """Genera un nuevo código secreto de cuatro dígitos."""
